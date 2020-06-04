@@ -1,6 +1,6 @@
 pipeline {
     agent {
-         label 'master'
+        docker { image 'python:3.5.1' }
     }
     environment {
         APPLICATION_NAME = 'python-nginx'
