@@ -22,11 +22,9 @@ pipeline {
         stage ("Install Dependencies") {
             steps {
                 bat """
-                pip install virtualenv
-                virtualenv foo                
-                foo\Scripts\activate                
+                                
                 pip install -r app/requirements.pip
-                deactivate
+               
                 """
             }
         }
