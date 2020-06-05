@@ -28,16 +28,7 @@ pipeline {
                 """
             }
         }
-        stage('Run Tests') {
-            steps {
-                bat '''
-                
-                nosetests app --with-xunit
-                
-                '''
-                junit "nosetests.xml"
-            }
-        }
+        
         stage('Store Artifact'){
             steps{
                 script{
