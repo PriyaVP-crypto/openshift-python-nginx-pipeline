@@ -23,10 +23,8 @@ pipeline {
             steps {
                 bat """
                 pip install virtualenv
-                virtualenv foo
-                C:\jenkins\workspace\payment\foo\Scripts
-                foo/Scripts/activate.bat
-                activate.bat
+                virtualenv foo                
+                foo/Scripts/activate.bat                
                 pip install -r app/requirements.pip
                 deactivate
                 """
