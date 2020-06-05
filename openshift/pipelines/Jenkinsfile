@@ -23,8 +23,8 @@ pipeline {
             steps {
                 bat """
                 pip install virtualenv
-                virtualenv 
-                source bin/activate
+                virtualenv foo
+                . foo/bin/activate
                 pip install -r app/requirements.pip
                 deactivate
                 """
