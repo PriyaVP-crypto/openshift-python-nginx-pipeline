@@ -11,7 +11,7 @@ pipeline {
         STAGE_PROJECT = "stage"
         TEMPLATE_NAME = "python-nginx"
         ARTIFACT_FOLDER = "target"
-        REGISTRY = "https://hub.docker.com/repo"
+        REGISTRY = "priyavp/payment-python"
         REGCREDENTIAL = 'dockerhub'
         PORT = 8081;
     }
