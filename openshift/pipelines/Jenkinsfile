@@ -13,6 +13,7 @@ pipeline {
         ARTIFACT_FOLDER = "target"
         REGISTRY = "priyavp/payment-python"
         REGCREDENTIAL = 'dockerhub'
+        DOCKERIMAGE= ''
         PORT = 8081;
     }
     stages {
@@ -64,7 +65,7 @@ pipeline {
         stage('Building Image Trial') {
             steps {
                 script {
-                    docker.build registry + ":$BUILD_NUMBER"
+                   DOCKERIMAGE = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
@@ -72,7 +73,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry( '', REGCREDENTIAL ) {
-                        dockerImage.push()
+                        DOCKERIMAGE.push()
                     }
                 }
             }
