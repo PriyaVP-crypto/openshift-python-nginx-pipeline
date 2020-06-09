@@ -78,5 +78,16 @@ pipeline {
                 }
             }
         }
+        stage('Build using openshift') {
+            steps {
+                script {
+                    openshiftBuild(namespace: 'dev', buildConfig: 'myapp', showBuildLogs: 'true')
+                }
+            }
+        }
+        stage('Deploy using openshift') {
+            steps {
+                script {
+                    openshiftDeploy(namespace: 'dev', buildConfig: 'myapp')
     }  
     }
