@@ -89,5 +89,8 @@ pipeline {
             steps {
                 script {
                     openshiftDeploy(namespace: 'Dev', buildConfig: 'payment')
+                }
+            }
+        }
     }  
     }
