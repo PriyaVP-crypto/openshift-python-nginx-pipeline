@@ -78,6 +78,21 @@ pipeline {
                 }
             }
         }
+        
+        stage('Build using openshift') {
+            steps {
+                script {
+                    openshiftBuild(namespace: 'dev', buildConfig: 'payment', showBuildLogs: 'true')
+                }
+            }
+        }
+        stage('Deploy using openshift') {
+            steps {
+                script {
+                    openshiftDeploy(namespace: 'dev', buildConfig: 'payment')
+                }
+            }
+        }
         stage('Create Image Builder') {
             when {
                 expression {
@@ -95,20 +110,6 @@ pipeline {
                         openshift.newBuild("--name=${TEMPLATE_NAME}", "--docker-image=docker.io/nginx:mainline-alpine", "--binary=true")
                         }
                     }
-                }
-            }
-        }
-        stage('Build using openshift') {
-            steps {
-                script {
-                    openshiftBuild(namespace: 'dev', buildConfig: 'payment', showBuildLogs: 'true')
-                }
-            }
-        }
-        stage('Deploy using openshift') {
-            steps {
-                script {
-                    openshiftDeploy(namespace: 'dev', buildConfig: 'payment')
                 }
             }
         }
