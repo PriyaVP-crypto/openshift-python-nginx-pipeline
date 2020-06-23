@@ -82,7 +82,7 @@ pipeline {
         stage('Build using openshift') {
             steps {
                 script {
-                    openshiftBuild(namespace: 'dev', buildConfig: 'payment', showBuildLogs: 'true')
+                    openshiftBuild(namespace: 'paymentcp4a', buildConfig: 'pythonpipeline', showBuildLogs: 'true')
                 }
             }
         }
