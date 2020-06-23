@@ -65,9 +65,13 @@ pipeline {
          stage('Create Image Builder') {
             when {
                 expression {
-                    openshift.withCluster('myCluster') {
-                        openshift.withProject(DEV_PROJECT) {
-                            return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
+                    withEnv(["PATH+OC=${tool 'oc311'}"]) {
+                        echo "hello"
+                        openshift.withCluster('myCluster') {
+                            echo "inside"
+                            openshift.withProject(DEV_PROJECT) {
+                                return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
+                            }
                         }
                 }
             }
