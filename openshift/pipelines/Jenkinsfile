@@ -62,15 +62,11 @@ pipeline {
                 }
             }
         }
-        
-        
-        
-        
-        stage('Create Image Builder') {
+         stage('Create Image Builder') {
             when {
                 expression {
                     openshift.withCluster('myCluster') {
-                    openshift.withProject(DEV_PROJECT) {
+                        openshift.withProject(DEV_PROJECT) {
                             return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
                         }
                 }
@@ -85,36 +81,13 @@ pipeline {
                     }
                 }
             }
-         stage('Building Image Trial') {
-            steps {
-                script {
-                   DOCKERIMAGE = docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
         }
-        stage('Deploy Image') {
-            steps {
-                script {
-                    docker.withRegistry( '', REGCREDENTIAL ) {
-                        DOCKERIMAGE.push()
-                    }
-                }
-            }
-        }
-            stage('Build using openshift') {
-            steps {
-                script {
-                    openshiftBuild(namespace: 'paymentcp4a', buildConfig: 'pythonpipeline', showBuildLogs: 'true')
-                }
-            }
-        }
-        stage('Deploy using openshift') {
-            steps {
-                script {
-                    openshiftDeploy(namespace: 'dev', buildConfig: 'payment')
-                }
-            }
-        }
+       
+        
+        
+        
+
+         
         }
     }  
     }
