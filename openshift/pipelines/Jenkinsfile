@@ -62,6 +62,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Building Image Trial') {
             steps {
                 script {
@@ -83,7 +84,7 @@ pipeline {
         stage('Create Image Builder') {
             when {
                 expression {
-                    openshift.withCluster() {
+                    openshift.withCluster('myCluster') {
                         openshift.withProject(DEV_PROJECT) {
                             return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
                         }
@@ -92,13 +93,27 @@ pipeline {
         }
         steps {
             script {
-                openshift.withCluster() {
+                openshift.withCluster('myCluster') {
                     openshift.withProject(DEV_PROJECT) {
                         openshift.newBuild("--name=${TEMPLATE_NAME}", "--docker-image=docker.io/nginx:mainline-alpine", "--binary=true")
                         }
                     }
                 }
             }
+            stage('Build using openshift') {
+            steps {
+                script {
+                    openshiftBuild(namespace: 'paymentcp4a', buildConfig: 'pythonpipeline', showBuildLogs: 'true')
+                }
+            }
+        }
+        stage('Deploy using openshift') {
+            steps {
+                script {
+                    openshiftDeploy(namespace: 'dev', buildConfig: 'payment')
+                }
+            }
+        }
         }
     }  
     }
