@@ -63,7 +63,29 @@ pipeline {
             }
         }
         
-        stage('Building Image Trial') {
+        
+        
+        
+        stage('Create Image Builder') {
+            when {
+                expression {
+                    openshift.withCluster('myCluster') {
+                    openshift.withProject(DEV_PROJECT) {
+                            return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
+                        }
+                }
+            }
+        }
+        steps {
+            script {
+                openshift.withCluster('myCluster') {
+                    openshift.withProject(DEV_PROJECT) {
+                        openshift.newBuild("--name=${TEMPLATE_NAME}", "--docker-image=docker.io/nginx:mainline-alpine", "--binary=true")
+                        }
+                    }
+                }
+            }
+         stage('Building Image Trial') {
             steps {
                 script {
                    DOCKERIMAGE = docker.build registry + ":$BUILD_NUMBER"
@@ -79,27 +101,6 @@ pipeline {
                 }
             }
         }
-        
-        
-        stage('Create Image Builder') {
-            when {
-                expression {
-                    openshift.withCluster('myCluster') {
-                        openshift.withProject(DEV_PROJECT) {
-                            return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
-                        }
-                }
-            }
-        }
-        steps {
-            script {
-                openshift.withCluster('myCluster') {
-                    openshift.withProject(DEV_PROJECT) {
-                        openshift.newBuild("--name=${TEMPLATE_NAME}", "--docker-image=docker.io/nginx:mainline-alpine", "--binary=true")
-                        }
-                    }
-                }
-            }
             stage('Build using openshift') {
             steps {
                 script {
