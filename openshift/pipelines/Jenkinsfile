@@ -71,7 +71,7 @@ pipeline {
                             echo "inside"
                             openshift.withProject(DEV_PROJECT) {
                                 echo "inside appln"
-                                return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
+                                
                                 echo "selector"
                             }
                         
