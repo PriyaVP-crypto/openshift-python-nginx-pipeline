@@ -70,7 +70,9 @@ pipeline {
                         openshift.withCluster('myCluster') {
                             echo "inside"
                             openshift.withProject(DEV_PROJECT) {
+                                echo "inside appln"
                                 return !openshift.selector("bc", "${TEMPLATE_NAME}").exists();
+                                echo "selector"
                             }
                         
                 }
@@ -78,9 +80,13 @@ pipeline {
         }
         steps {
             script {
+                echo "inside step"
                 openshift.withCluster('myCluster') {
+                    echo "seconds cluster"
                     openshift.withProject(DEV_PROJECT) {
+                        echo "build for dev"
                         openshift.newBuild("--name=${TEMPLATE_NAME}", "--docker-image=docker.io/nginx:mainline-alpine", "--binary=true")
+                        echo "created bc"
                         }
                     }
                 }
